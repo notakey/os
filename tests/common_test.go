@@ -84,7 +84,7 @@ func (s *QemuSuite) RunQemuInstalled(c *C, additionalArgs ...string) error {
 func (s *QemuSuite) runQemu(c *C, args ...string) error {
 	c.Assert(s.qemuCmd, IsNil) // can't run 2 qemu's at once (yet)
 	s.qemuCmd = exec.Command(s.runCommand, args...)
-	//s.qemuCmd.Stdout = os.Stdout
+	s.qemuCmd.Stdout = os.Stdout
 	s.qemuCmd.Stderr = os.Stderr
 	if err := s.qemuCmd.Start(); err != nil {
 		return err

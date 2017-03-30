@@ -44,7 +44,7 @@ func (s *QemuSuite) TestUpgradeKexec(c *C) {
 	{
 		s.RunQemuWith(c, runArgs...)
 
-	//	s.CheckCall(c, fmt.Sprintf("sudo ros os upgrade --force --kexec"))
+		//	s.CheckCall(c, fmt.Sprintf("sudo ros os upgrade --force --kexec"))
 		s.CheckCall(c, fmt.Sprintf("sudo ros os upgrade --kexec -i rancher/os:%s%s --force", Version, Suffix))
 
 		time.Sleep(3000 * time.Millisecond)
