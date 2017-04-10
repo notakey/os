@@ -3,7 +3,7 @@ PREFIX?=$(shell pwd)
 
 
 # Used to populate version variable in main package.
-VERSION=$(shell git describe --match 'v[0-9]*' --dirty='.m' --always)
+VERSION=$(shell git describe --match '*v[0-9]*' --dirty='.m' --always | sed 's/^.*\-v/v/g')
 
 # Allow turning off function inlining and variable registerization
 ifeq (${DISABLE_OPTIMIZATION},true)
