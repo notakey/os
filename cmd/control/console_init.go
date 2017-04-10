@@ -116,9 +116,8 @@ func consoleInitFunc() error {
         \\____|__  /\\____/|__| (____  /__|_ \\\\___  > ____|
               \\/                 \\/     \\/    \\/\\/
 
-          \s \r
-          (`+config.Version+`)
-          \n \l
+          \s  \r / `+config.Version+` / \n
+
          `), 0644); err != nil {
 		log.Error(err)
 	}
