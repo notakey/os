@@ -294,9 +294,9 @@ rancher:
       - /opt:/opt
     docker:
       {{if eq "amd64" .ARCH -}}
-      image: {{.OS_REPO}}/os-docker:17.03.1{{.SUFFIX}}
+      image: rancher/os-docker:17.03.1{{.SUFFIX}}
       {{else -}}
-      image: {{.OS_REPO}}/os-docker:1.11.2{{.SUFFIX}}
+      image: rancher/os-docker:1.11.2{{.SUFFIX}}
       {{end -}}
       command: ros user-docker
       environment:

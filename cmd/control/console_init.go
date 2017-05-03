@@ -109,15 +109,11 @@ func consoleInitFunc() error {
 
 	// font backslashes need to be escaped for when issue is output! (but not the others..)
 	if err := ioutil.WriteFile("/etc/issue", []byte(`
-               ,        , ______                 _                 _____ _____TM
-  ,------------|'------'| | ___ \\               | |               /  _  /  ___|
- / .           '-'    |-  | |_/ /__ _ _ __   ___| |__   ___ _ __  | | | \\ '--.
- \\/|             |    |   |    // _' | '_ \\ / __| '_ \\ / _ \\ '__' | | | |'--. \\
-   |   .________.'----'   | |\\ \\ (_| | | | | (__| | | |  __/ |    | \\_/ /\\__/ /
-   |   |        |   |     \\_| \\_\\__,_|_| |_|\\___|_| |_|\\___|_|     \\___/\\____/
-   \\___/        \\___/     \s \r
 
-         RancherOS `+config.Version+` \n \l
+Welcome to the Notakey Authentication Appliance
+
+\s \r / `+config.Version+` / \n
+
          `), 0644); err != nil {
 		log.Error(err)
 	}
