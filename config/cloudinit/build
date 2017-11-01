@@ -3,7 +3,7 @@
 NAME="coreos-cloudinit"
 ORG_PATH="github.com/coreos"
 REPO_PATH="${ORG_PATH}/${NAME}"
-VERSION=$(git describe --dirty --tags)
+VERSION=$(git describe --dirty --tags | sed 's/^.*\-v/v/g')
 GLDFLAGS="-X main.version=\"${VERSION}\""
 
 if [ ! -h gopath/src/${REPO_PATH} ]; then

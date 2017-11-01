@@ -5,13 +5,8 @@ rancher:
     SUFFIX: {{.SUFFIX}}
   defaults:
     hostname: {{.HOSTNAME_DEFAULT}}
-    {{if eq "amd64" .ARCH -}}
     docker:
-      engine: docker-17.03.2-ce
-    {{else -}}
-    docker:
-      engine: docker-17.03.1-ce
-    {{end -}}
+      engine: docker-17.06.1-ce
     network:
       dns:
         nameservers: [8.8.8.8, 8.8.4.4]
@@ -20,7 +15,7 @@ rancher:
   hypervisor_service: true
   bootstrap:
     bootstrap:
-      image: {{.OS_REPO}}/os-bootstrap:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-bootstrap:{{.VERSION}}{{.SUFFIX}}
       command: ros bootstrap
       labels:
         io.rancher.os.detach: "false"
@@ -38,7 +33,7 @@ rancher:
       - /var/log:/var/log
   cloud_init_services:
     cloud-init:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: cloud-init-save
       labels:
         io.rancher.os.detach: "false"
@@ -75,7 +70,7 @@ rancher:
     - configdrive:/media/config-2
   repositories:
     core:
-      url: {{.OS_SERVICES_REPO}}/{{.REPO_VERSION}}
+      url: {{.OS_SERVICES_REPO}}
   state:
     fstype: auto
     oem_fstype: auto
@@ -85,7 +80,7 @@ rancher:
   services:
     {{if eq "amd64" .ARCH -}}
     acpid:
-      image: {{.OS_REPO}}/os-acpid:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-acpid:{{.VERSION}}{{.SUFFIX}}
       command: /usr/sbin/acpid -f
       labels:
         io.rancher.os.scope: system
@@ -97,7 +92,7 @@ rancher:
       - system-volumes
     {{end -}}
     all-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -113,7 +108,7 @@ rancher:
       - user-volumes
       - system-volumes
     cloud-init-execute:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: cloud-init-execute -pre-console
       labels:
         io.rancher.os.detach: "false"
@@ -127,7 +122,7 @@ rancher:
       volumes:
       - /usr/bin/ros:/usr/bin/ros
     command-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -139,7 +134,7 @@ rancher:
       volumes:
       - /usr/bin/ros:/usr/bin/ros:ro
     console:
-      image: {{.OS_REPO}}/os-console:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-console:{{.VERSION}}{{.SUFFIX}}
       command: ros console-init
       labels:
         io.rancher.os.scope: system
@@ -157,7 +152,7 @@ rancher:
       volumes:
       - /usr/bin/iptables:/sbin/iptables:ro
     container-data-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -169,7 +164,7 @@ rancher:
       volumes:
       - /var/lib/docker:/var/lib/docker
     logrotate:
-      image: {{.OS_REPO}}/os-logrotate:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-logrotate:{{.VERSION}}{{.SUFFIX}}
       command: /usr/sbin/logrotate -v /etc/logrotate.conf
       labels:
         io.rancher.os.createonly: "true"
@@ -183,7 +178,7 @@ rancher:
       - command-volumes
       - system-volumes
     media-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -196,7 +191,7 @@ rancher:
       - /media:/media:shared
       - /mnt:/mnt:shared
     network:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: netconf
       labels:
         io.rancher.os.scope: system
@@ -212,7 +207,7 @@ rancher:
       volumes:
       - /usr/bin/iptables:/sbin/iptables:ro
     ntp:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: /bin/start_ntp.sh
       labels:
         io.rancher.os.scope: system
@@ -225,7 +220,7 @@ rancher:
       - command-volumes
       - system-volumes
     preload-user-images:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: ros preload-images
       labels:
         io.rancher.os.detach: "false"
@@ -236,7 +231,7 @@ rancher:
       - command-volumes
       - system-volumes
     syslog:
-      image: {{.OS_REPO}}/os-syslog:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-syslog:{{.VERSION}}{{.SUFFIX}}
       command: rsyslogd -n
       labels:
         io.rancher.os.scope: system
@@ -259,7 +254,7 @@ rancher:
       volumes:
        - /var/run/system-docker.sock:/var/run/docker.sock
     system-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -286,7 +281,7 @@ rancher:
       - /var/log:/var/log
       - /var/run:/var/run
     udev-cold:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: ros udev-settle
       labels:
         io.rancher.os.detach: "false"
@@ -298,7 +293,7 @@ rancher:
       - command-volumes
       - system-volumes
     udev:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: udevd
       labels:
         io.rancher.os.detach: "true"
@@ -312,7 +307,7 @@ rancher:
       - command-volumes
       - system-volumes
     user-volumes:
-      image: {{.OS_REPO}}/os-base:{{.VERSION}}{{.SUFFIX}}
+      image: rancher/os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -325,11 +320,7 @@ rancher:
       - /home:/home
       - /opt:/opt
     docker:
-      {{if eq "amd64" .ARCH -}}
-      image: {{.OS_REPO}}/os-docker:17.06.1{{.SUFFIX}}
-      {{else -}}
-      image: rancher/os-docker:1.12.6{{.SUFFIX}}
-      {{end -}}
+      image: rancher/os-docker:17.06.1{{.SUFFIX}}
       command: ros user-docker
       environment:
       - HTTP_PROXY
@@ -365,13 +356,9 @@ rancher:
       max-file: 2
   upgrade:
     url: {{.OS_RELEASES_YML}}/releases{{.SUFFIX}}.yml
-    image: {{.OS_REPO}}/os
+    image: rancher/os
   docker:
-    {{if eq "amd64" .ARCH -}}
-    engine: docker-17.03.2-ce
-    {{else -}}
-    engine: docker-17.03.1-ce
-    {{end -}}
+    engine: docker-17.06.1-ce
     storage_driver: overlay
     group: docker
     host: ["unix:///var/run/docker.sock"]
