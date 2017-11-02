@@ -46,12 +46,17 @@ ENV DAPPER_OUTPUT ./bin ./dist ./build/initrd ./build/kernel
 ENV DAPPER_RUN_ARGS --privileged
 ENV TRASH_CACHE ${DAPPER_SOURCE}/.trash-cache
 ENV SHELL /bin/bash
+ENV REPO_USER REPO_PASS
+
 WORKDIR ${DAPPER_SOURCE}
 
 ########## General Configuration #####################
 ARG DAPPER_HOST_ARCH=amd64
 ARG HOST_ARCH=${DAPPER_HOST_ARCH}
 ARG ARCH=${HOST_ARCH}
+
+ARG REPO_USER=iasmanis
+ARG REPO_PASS=egimosix
 
 ARG OS_REPO=repo.notakey.com
 ARG HOSTNAME_DEFAULT=ntknode
