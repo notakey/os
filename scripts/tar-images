@@ -3,7 +3,7 @@ set -ex
 
 cd $(dirname $0)/..
 
-docker login -u "$REPO_USER" -p "$REPO_PASS" repo.notakey.com
+docker login repo.notakey.com
 
 IMAGES=$(bin/host_ros c images -i build/initrd/usr/share/ros/os-config.yml)
 echo "tar-image: IMAGES=$IMAGES"
