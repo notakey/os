@@ -2,6 +2,7 @@
 set -ex
 
 cd $(dirname $0)/..
+env 
 
 IMAGES=$(bin/host_ros c images -i build/initrd/usr/share/ros/os-config.yml)
 echo "tar-image: IMAGES=$IMAGES"
