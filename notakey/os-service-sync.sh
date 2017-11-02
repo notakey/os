@@ -32,24 +32,28 @@ KERNEL_VERSION="4.9.49-rancher"
 REPO_AUTH="${2-}"
 DEST_REPO=repo.notakey.com
 
+_token=""
+
 _remote_tag_checksum() {
   local _tag; _tag="${3:-latest}"
   local _image; _image="${2}"
-  local _token
   local _proxy_cfg; _proxy_cfg=""
   local _token_cmd
   local _cfgstatus; _cfgstatus="${1:-repo.notakey.com}"
   
   if [ "$_cfgstatus" == "hub.docker.com" ]; then  
-  	   ## Tokens used only if using hub.docker.com
-  	  _token_cmd="curl $_proxy_cfg 'https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/${_image}:pull'"
+  	  ## Tokens used only if using hub.docker.com
+  	  if [ -z "$_token" ]; then 	
+		  _token_cmd="curl $_proxy_cfg 'https://auth.docker.io/token?service=registry.docker.io&scope=repository:rancher/${_image}:pull'"
 
-  	  _token=$( eval $_token_cmd 2>/dev/null | jq -r .token )
-	  if [ -z "$_token" ]; then
-	  	  echo ""
-	  	  return 
-	  fi
-  
+  		  _token=$( eval $_token_cmd 2>/dev/null | jq -r .token )
+
+		  if [ -z "$_token" ]; then
+		  	  echo ""
+	  		  return 
+		  fi
+  	  fi
+
   	  _tag_cmd="curl -s --fail $_proxy_cfg 
           -H \"Accept: application/vnd.docker.distribution.manifest.v2+json\" 
           -H \"Authorization: Bearer $_token\" 
