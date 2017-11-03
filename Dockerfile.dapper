@@ -46,8 +46,7 @@ ENV DAPPER_OUTPUT ./bin ./dist ./build/initrd ./build/kernel
 ENV DAPPER_RUN_ARGS --privileged
 ENV TRASH_CACHE ${DAPPER_SOURCE}/.trash-cache
 ENV SHELL /bin/bash
-ENV REPO_USER REPO_PASS
-ENV PREFIX
+ENV PREFIX PREFIX
 
 WORKDIR ${DAPPER_SOURCE}
 
