@@ -50,9 +50,9 @@ COPY initrd/* /
 HERE
 
 name="os-initrd"
-tag="${OS_REPO}/${name}:${VERSION}${SUFFIX}"
+tag="${OS_REPO}/${PREFIX}${name}:${VERSION}${SUFFIX}"
 pushd .
 cd ${INITRD_DIR}/..
-docker build -t ${OS_REPO}/${name} -f Dockerfile.initrd .
+docker build -t rancher/${name} -f Dockerfile.initrd .
 docker tag rancher/${name} ${tag}
 popd
