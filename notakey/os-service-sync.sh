@@ -5,7 +5,7 @@ set -o errexit
 set -o pipefail
 
 usage() {
-	echo "  Synces packages listen in repository under rancher/ namesapce on hub.docker.com"
+	echo "  Synces packages listed in repository under rancher/ namesapce on hub.docker.com"
 	echo "  and publishes them under DEST_REPO repository. "
 	
 	echo " "
