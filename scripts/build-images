@@ -13,7 +13,7 @@ touch dist/images
 
 for i in $BASE/[0-9]*; do
     name="os-$(echo ${i} | cut -f2 -d-)"
-    tag="${OS_REPO}/${name}:${VERSION}${SUFFIX}"
+    tag="${OS_REPO}/${PREFIX}${name}:${VERSION}${SUFFIX}"
     echo "build-image: Building ${tag}"
     if [ -x ${i}/prebuild.sh ]; then
         ${i}/prebuild.sh
