@@ -6,7 +6,7 @@ cd $(dirname $0)/..
 docker login repo.notakey.com
 
 BASE_IMAGES=$(bin/host_ros c images -i build/initrd/usr/share/ros/os-config.yml)
-IMAGES="${ADDITIONAL_IMAGES} ${BASE_IMAGES}"
+IMAGES="${BASE_IMAGES} ${ADDITIONAL_IMAGES}"
 
 echo "tar-image: IMAGES=$IMAGES"
 for i in $IMAGES; do
