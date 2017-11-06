@@ -82,7 +82,7 @@ ARG BUILD_DOCKER_URL_arm64=https://github.com/rancher/docker/releases/download/$
 ARG OS_RELEASES_YML=https://index.notakey.com/notakey-support/appliance/raw/master/
 
 ARG OS_SERVICES_REPO=https://index.notakey.com/notakey-support/appliance/raw/v4.2.0/ros-services/
-ARG IMAGE_NAME=${OS_REPO}/ros-os
+ARG IMAGE_NAME=${OS_REPO}/${PREFIX}os
 ARG DFS_IMAGE=rancher/docker:v${DOCKER_VERSION}-2
 
 ARG OS_BASE_URL_amd64=https://github.com/rancher/os-base/releases/download/v2017.02.5-1/os-base_amd64.tar.xz

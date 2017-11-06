@@ -3,7 +3,7 @@ set -ex
 
 cd $(dirname $0)/..
 
-docker login repo.notakey.com
+# docker login repo.notakey.com
 
 BASE_IMAGES=$(bin/host_ros c images -i build/initrd/usr/share/ros/os-config.yml)
 IMAGES="${BASE_IMAGES} ${ADDITIONAL_IMAGES}"
