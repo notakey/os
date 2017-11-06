@@ -46,7 +46,6 @@ ENV DAPPER_OUTPUT ./bin ./dist ./build/initrd ./build/kernel
 ENV DAPPER_RUN_ARGS --privileged
 ENV TRASH_CACHE ${DAPPER_SOURCE}/.trash-cache
 ENV SHELL /bin/bash
-ENV PREFIX ros-
 # ENV ADDITIONAL_IMAGES="repo.notakey.com/ros-os-alpineconsole:v1.1.0-rc3 repo.notakey.com/ros-os-openvmtools:latest"
 ENV ADDITIONAL_IMAGES=""
 
@@ -58,6 +57,7 @@ ARG HOST_ARCH=${DAPPER_HOST_ARCH}
 ARG ARCH=${HOST_ARCH}
 
 ARG OS_REPO=repo.notakey.com
+ARG PREFIX=ros-
 ARG HOSTNAME_DEFAULT=ntknode
 ARG DISTRIB_ID=NTK_RancherOS
 
@@ -126,7 +126,8 @@ ENV BUILD_DOCKER_URL=BUILD_DOCKER_URL_${ARCH} \
     OS_REPO=${OS_REPO} \
     OS_SERVICES_REPO=${OS_SERVICES_REPO} \
     REPO_VERSION=master \
-    SELINUX_POLICY_URL=${SELINUX_POLICY_URL}
+    SELINUX_POLICY_URL=${SELINUX_POLICY_URL} \
+    PREFIX=${PREFIX}
 ENV PATH=${GOPATH}/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p ${DOWNLOADS}

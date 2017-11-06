@@ -5,8 +5,13 @@ rancher:
     SUFFIX: {{.SUFFIX}}
   defaults:
     hostname: {{.HOSTNAME_DEFAULT}}
+    {{if eq "amd64" .ARCH -}}
     docker:
-      engine: docker-17.06.1-ce
+      engine: docker-17.03.2-ce
+    {{else -}}
+    docker:
+      engine: docker-17.03.1-ce
+    {{end -}}
     network:
       dns:
         nameservers: [8.8.8.8, 8.8.4.4]
@@ -15,7 +20,7 @@ rancher:
   hypervisor_service: true
   bootstrap:
     bootstrap:
-      image: repo.notakey.com/ros-os-bootstrap:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-bootstrap:{{.VERSION}}{{.SUFFIX}}
       command: ros bootstrap
       labels:
         io.rancher.os.detach: "false"
@@ -33,7 +38,7 @@ rancher:
       - /var/log:/var/log
   cloud_init_services:
     cloud-init:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: cloud-init-save
       labels:
         io.rancher.os.detach: "false"
@@ -54,7 +59,7 @@ rancher:
       - /usr/bin/ros:/usr/bin/cloud-init-save
       - /usr/share/ros:/usr/share/ros:ro
       - /var/lib/rancher:/var/lib/rancher
-      - /var/lib/repo.notakey.com/ros-conf:/var/lib/repo.notakey.com/ros-conf
+      - /var/lib/rancher/conf:/var/lib/rancher/conf
       - /var/log:/var/log
   bootstrap_docker:
     bridge: none
@@ -70,7 +75,7 @@ rancher:
     - configdrive:/media/config-2
   repositories:
     core:
-      url: {{.OS_SERVICES_REPO}}
+      url: {{.OS_SERVICES_REPO}}/{{.REPO_VERSION}}
   state:
     fstype: auto
     oem_fstype: auto
@@ -80,7 +85,7 @@ rancher:
   services:
     {{if eq "amd64" .ARCH -}}
     acpid:
-      image: repo.notakey.com/ros-os-acpid:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-acpid:{{.VERSION}}{{.SUFFIX}}
       command: /usr/sbin/acpid -f
       labels:
         io.rancher.os.scope: system
@@ -92,7 +97,7 @@ rancher:
       - system-volumes
     {{end -}}
     all-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -108,7 +113,7 @@ rancher:
       - user-volumes
       - system-volumes
     cloud-init-execute:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: cloud-init-execute -pre-console
       labels:
         io.rancher.os.detach: "false"
@@ -122,7 +127,7 @@ rancher:
       volumes:
       - /usr/bin/ros:/usr/bin/ros
     command-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -134,7 +139,7 @@ rancher:
       volumes:
       - /usr/bin/ros:/usr/bin/ros:ro
     console:
-      image: repo.notakey.com/ros-os-console:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-console:{{.VERSION}}{{.SUFFIX}}
       command: ros console-init
       labels:
         io.rancher.os.scope: system
@@ -152,7 +157,7 @@ rancher:
       volumes:
       - /usr/bin/iptables:/sbin/iptables:ro
     container-data-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -164,7 +169,7 @@ rancher:
       volumes:
       - /var/lib/docker:/var/lib/docker
     logrotate:
-      image: repo.notakey.com/ros-os-logrotate:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-logrotate:{{.VERSION}}{{.SUFFIX}}
       command: /usr/sbin/logrotate -v /etc/logrotate.conf
       labels:
         io.rancher.os.createonly: "true"
@@ -178,7 +183,7 @@ rancher:
       - command-volumes
       - system-volumes
     media-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -191,7 +196,7 @@ rancher:
       - /media:/media:shared
       - /mnt:/mnt:shared
     network:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: netconf
       labels:
         io.rancher.os.scope: system
@@ -207,7 +212,7 @@ rancher:
       volumes:
       - /usr/bin/iptables:/sbin/iptables:ro
     ntp:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: /bin/start_ntp.sh
       labels:
         io.rancher.os.scope: system
@@ -220,7 +225,7 @@ rancher:
       - command-volumes
       - system-volumes
     preload-user-images:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: ros preload-images
       labels:
         io.rancher.os.detach: "false"
@@ -231,7 +236,7 @@ rancher:
       - command-volumes
       - system-volumes
     syslog:
-      image: repo.notakey.com/ros-os-syslog:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-syslog:{{.VERSION}}{{.SUFFIX}}
       command: rsyslogd -n
       labels:
         io.rancher.os.scope: system
@@ -244,7 +249,7 @@ rancher:
       - command-volumes
       - system-volumes
     system-cron:
-      image: repo.notakey.com/ros-container-crontab:v0.1.0
+      image: rancher/container-crontab:v0.1.0
       labels:
         io.rancher.os.scope: system
       uts: host
@@ -254,7 +259,7 @@ rancher:
       volumes:
        - /var/run/system-docker.sock:/var/run/docker.sock
     system-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -275,13 +280,13 @@ rancher:
       - /lib/modules:/lib/modules
       - /run:/run
       - /usr/share/ros:/usr/share/ros
-      - /var/lib/repo.notakey.com/ros-cache:/var/lib/repo.notakey.com/ros-cache
-      - /var/lib/repo.notakey.com/ros-conf:/var/lib/repo.notakey.com/ros-conf
+      - /var/lib/rancher/cache:/var/lib/rancher/cache
+      - /var/lib/rancher/conf:/var/lib/rancher/conf
       - /var/lib/rancher:/var/lib/rancher
       - /var/log:/var/log
       - /var/run:/var/run
     udev-cold:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: ros udev-settle
       labels:
         io.rancher.os.detach: "false"
@@ -293,7 +298,7 @@ rancher:
       - command-volumes
       - system-volumes
     udev:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: udevd
       labels:
         io.rancher.os.detach: "true"
@@ -307,7 +312,7 @@ rancher:
       - command-volumes
       - system-volumes
     user-volumes:
-      image: repo.notakey.com/ros-os-base:{{.VERSION}}{{.SUFFIX}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-base:{{.VERSION}}{{.SUFFIX}}
       command: echo
       labels:
         io.rancher.os.createonly: "true"
@@ -320,7 +325,11 @@ rancher:
       - /home:/home
       - /opt:/opt
     docker:
-      image: repo.notakey.com/ros-os-docker:17.06.1{{.SUFFIX}}
+      {{if eq "amd64" .ARCH -}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-docker:17.03.2{{.SUFFIX}}
+      {{else -}}
+      image: {{.OS_REPO}}/{{.PREFIX}}os-docker:17.03.1{{.SUFFIX}}
+      {{end -}}
       command: ros user-docker
       environment:
       - HTTP_PROXY
@@ -356,14 +365,18 @@ rancher:
       max-file: 2
   upgrade:
     url: {{.OS_RELEASES_YML}}/releases{{.SUFFIX}}.yml
-    image: repo.notakey.com/ros-os
+    image: {{.OS_REPO}}/{{.PREFIX}}os
   docker:
-    engine: docker-17.06.1-ce
+    {{if eq "amd64" .ARCH -}}
+    engine: docker-17.03.2-ce
+    {{else -}}
+    engine: docker-17.03.1-ce
+    {{end -}}
     storage_driver: overlay
     group: docker
     host: ["unix:///var/run/docker.sock"]
     log_opts:
       max-size: 25m
       max-file: 2
-    tls_args: [--tlsverify, --tlscacert=/etc/docker/tls/ca.pem, --tlscert=/etc/docker/tls/server-cert.pem, --tlskey=/etc/docker/tls/server-key.pem,
-      '-H=0.0.0.0:2376']
+    tls_args: [--tlsverify, --tlscacert=/etc/docker/tls/ca.pem, --tlscert=/etc/docker/tls/server-cert.pem, --tlskey=/etc/docker/tls/server-key.pem, '-H=0.0.0.0:2376']
+      
