@@ -108,17 +108,18 @@ func consoleInitFunc() error {
 		}
 	}
 
-	// font backslashes need to be escaped for when issue is output! (but not the others..)
+	// forward backslashes need to be escaped for when issue is output! (but not the others..)
+	// this is full 80x terminal line
+________________________________________________________________________________
 	if err := ioutil.WriteFile("/etc/issue", []byte(`
+               _______          __          __
+               \\      \\   _____/  |______  |  | __ ____ ___.__.
+               /   |   \\ /  _ \\   __\\__  \\ |  |/ // __ <   |  |
+              /    |    (  <_> )  |  / __ \\|    <\\  ___/\\___  |
+              \\____|__  /\\____/|__| (____  /__|_ \\\\___  > ____|
+                    \\/                 \\/     \\/    \\/\\/
 
-         _______          __          __
-         \\      \\   _____/  |______  |  | __ ____ ___.__.
-         /   |   \\ /  _ \\   __\\__  \\ |  |/ // __ <   |  |
-        /    |    (  <_> )  |  / __ \\|    <\\  ___/\\___  |
-        \\____|__  /\\____/|__| (____  /__|_ \\\\___  > ____|
-              \\/                 \\/     \\/    \\/\\/
-
-          \s  \r / `+config.Version+` / \n
+                 \s  \r / `+config.Version+` / \n
 
          `), 0644); err != nil {
 		log.Error(err)
