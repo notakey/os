@@ -110,7 +110,6 @@ func consoleInitFunc() error {
 
 	// forward backslashes need to be escaped for when issue is output! (but not the others..)
 	// this is full 80x terminal line
-________________________________________________________________________________
 	if err := ioutil.WriteFile("/etc/issue", []byte(`
                _______          __          __
                \\      \\   _____/  |______  |  | __ ____ ___.__.
